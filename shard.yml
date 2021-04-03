@@ -1,0 +1,14 @@
+name: lucky_subdomain
+version: 0.1.0
+
+authors:
+  - matthewmcgarvey <matthewmcgarvey14@gmail.com>
+
+crystal: 1.0.0
+
+license: MIT
+
+dependencies:
+  lucky:
+    github: luckyframework/lucky
+    branch: master

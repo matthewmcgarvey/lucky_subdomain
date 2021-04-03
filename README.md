@@ -50,7 +50,7 @@ get "/users" do
   users = UserQuery.new.tenant(tenant)
   html IndexPage, users: users
 end
-``**
+```
 
 ### Note
 

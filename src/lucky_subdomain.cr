@@ -3,6 +3,8 @@ require "lucky"
 
 module LuckySubdomain
   VERSION = "0.1.0"
+  # Taken from https://github.com/rails/rails/blob/afc6abb674b51717dac39ea4d9e2252d7e40d060/actionpack/lib/action_dispatch/http/url.rb#L8
+  IP_HOST_REGEXP = /\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/
 
   Habitat.create do
     setting tld_length : Int32 = 1
@@ -26,9 +28,9 @@ module LuckySubdomain
     {% raise "No subdomain available without calling `register_subdomain` first." %}
   end
 
-  private def _fetch_subdomain
+  private def _fetch_subdomain : String?
     host = request.hostname
-    return if host.nil?
+    return if host.nil? || IP_HOST_REGEXP.matches?(host)
 
     parts = host.split('.')
     parts.pop(settings.tld_length + 1)

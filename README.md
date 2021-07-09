@@ -58,9 +58,13 @@ If you would like to skip the subdomain requirement, you can add this to the top
 skip _match_subdomain
 ```
 
-## Development
+### Local Development
 
-TODO: Write development instructions here
+If you try to register a subdomain and access it locally using `subdomain.127.0.0.1:3000` you will receive an error.
+To get around this you can do one of two things:
+
+1. Always use `subdomain.localhost:3000` and set `tld_length` to 0 in development (make sure it is not set to 0 when deployed)
+2. Update your `/etc/hosts` file with a development url
 
 ## Contributing
 

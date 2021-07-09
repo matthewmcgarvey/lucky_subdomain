@@ -111,4 +111,19 @@ describe LuckySubdomain do
       response.body.should eq "foo"
     end
   end
+
+  it "will fail if using ip address" do
+    request = build_request(host: "development.127.0.0.1:3000")
+    expect_raises(LuckySubdomain::InvalidSubdomainError) do
+      Simple::Index.new(build_context(request), params).call
+    end
+  end
+
+  it "will not fail if using localhost and port with tld length set to 0" do
+    LuckySubdomain.temp_config(tld_length: 0) do
+      request = build_request(host: "foo.locahost:3000")
+      response = Simple::Index.new(build_context(request), params).call
+      response.body.should eq "foo"
+    end
+  end
 end

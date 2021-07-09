@@ -35,10 +35,10 @@ Define your subdomain restriction.
 class BrowserAction < Lucky::Action
   include LuckySubdomain
   
-  subdomain # subdomain required but any will do
-  subdomain "admin" # subdomain must equal "admin" (admin.example.com)
-  subdomain /(prod|production)/ # subdomain must match regex
-  subdomain ["tenant1", "tenant2", /tenant\d/] # subdomain must match one of the items
+  register_subdomain # subdomain required but any will do
+  register_subdomain "admin" # subdomain must equal "admin" (admin.example.com)
+  register_subdomain /(prod|production)/ # subdomain must match regex
+  register_subdomain ["tenant1", "tenant2", /tenant\d/] # subdomain must match one of the items
 end
 ```
 
@@ -52,12 +52,11 @@ get "/users" do
 end
 ```
 
-### Note
+If you would like to skip the subdomain requirement, you can add this to the top of your action class
 
-Because the `subdomain` you use to declare the restriction and the `subdomain` you call in your route block to get the subdomain value are
-the same name, the `subdomain` instance method is only available if you use the `subdomain` macro.
-It will break if you try to call the instance method without having called the macro first.
-If you'd like the subdomain without setting a restriction, call `fetch_subdomain` but keep in mind that it is nilable.
+```crystal
+skip _match_subdomain
+```
 
 ## Development
 

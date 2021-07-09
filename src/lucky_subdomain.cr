@@ -5,19 +5,23 @@ module LuckySubdomain
 
   alias Matcher = String | Regex | Bool | Array(String | Regex) | Array(String) | Array(Regex)
 
-  macro subdomain(matcher = true)
-    before match_subdomain
+  macro register_subdomain(matcher = true)
+    before _match_subdomain
 
     private def subdomain : String
-      fetch_subdomain.not_nil!
+      _fetch_subdomain.not_nil!
     end
 
-    private def match_subdomain
-      match_subdomain({{ matcher }})
+    private def _match_subdomain
+      _match_subdomain({{ matcher }})
     end
   end
 
-  private def fetch_subdomain
+  def subdomain : String
+    {% raise "No subdomain available without calling `register_subdomain` first." %}
+  end
+
+  private def _fetch_subdomain
     host = request.hostname
     return if host.nil?
 
@@ -27,11 +31,11 @@ module LuckySubdomain
     parts.empty? ? nil : parts.join(".")
   end
 
-  private def match_subdomain(matcher : Matcher)
+  private def _match_subdomain(matcher : Matcher)
     expected = [matcher].flatten.compact
     return continue if expected.empty?
 
-    actual = fetch_subdomain
+    actual = _fetch_subdomain
     result = expected.any? do |expected_subdomain|
       case expected_subdomain
       when true

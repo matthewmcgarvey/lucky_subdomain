@@ -8,7 +8,7 @@ abstract class BaseAction < Lucky::Action
 end
 
 class Simple::Index < BaseAction
-  subdomain
+  register_subdomain
 
   get "/simple" do
     plain_text subdomain
@@ -16,7 +16,7 @@ class Simple::Index < BaseAction
 end
 
 class Specific::Index < BaseAction
-  subdomain "foo"
+  register_subdomain "foo"
 
   get "/specific" do
     plain_text subdomain
@@ -24,7 +24,7 @@ class Specific::Index < BaseAction
 end
 
 class Regex::Index < BaseAction
-  subdomain /www\d/
+  register_subdomain /www\d/
 
   get "/regex" do
     plain_text subdomain
@@ -32,7 +32,7 @@ class Regex::Index < BaseAction
 end
 
 class Multiple::Index < BaseAction
-  subdomain ["test", "staging", /(prod|production)/]
+  register_subdomain ["test", "staging", /(prod|production)/]
 
   get "/multiple" do
     plain_text subdomain

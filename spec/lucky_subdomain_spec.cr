@@ -103,4 +103,12 @@ describe LuckySubdomain do
       Multiple::Index.new(build_context(request), params).call
     end
   end
+
+  it "has configuration for urls with larger tld length" do
+    LuckySubdomain.temp_config(tld_length: 2) do
+      request = build_request(host: "foo.example.co.uk")
+      response = Simple::Index.new(build_context(request), params).call
+      response.body.should eq "foo"
+    end
+  end
 end

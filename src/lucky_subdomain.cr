@@ -1,7 +1,12 @@
+require "habitat"
 require "lucky"
 
 module LuckySubdomain
   VERSION = "0.1.0"
+
+  Habitat.create do
+    setting tld_length : Int32 = 1
+  end
 
   alias Matcher = String | Regex | Bool | Array(String | Regex) | Array(String) | Array(Regex)
 
@@ -26,7 +31,7 @@ module LuckySubdomain
     return if host.nil?
 
     parts = host.split('.')
-    parts.pop(2)
+    parts.pop(settings.tld_length + 1)
 
     parts.empty? ? nil : parts.join(".")
   end
